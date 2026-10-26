@@ -1,0 +1,348 @@
+:root {
+  --night: #0f0710;
+  --wine: #2c1220;
+  --wine-2: #451a2b;
+  --rose: #d98aa1;
+  --rose-deep: #b5546f;
+  --blush: #f7dfe6;
+  --ivory: #f8f1e7;
+  --gold: #c9a86a;
+  --gold-soft: #e2c690;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  background: radial-gradient(ellipse at 50% 0%, var(--wine-2) 0%, var(--wine) 45%, var(--night) 100%);
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-family: "Cormorant Garamond", serif;
+  color: var(--blush);
+  position: relative;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ---------- night sky ---------- */
+
+.night-sky {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.star {
+  position: absolute;
+  background: var(--gold-soft);
+  border-radius: 50%;
+  animation: twinkle ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.15; transform: scale(1); }
+  50% { opacity: 0.9; transform: scale(1.4); }
+}
+
+/* ---------- floating words / hearts ---------- */
+
+.hearts-field {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.floating-word {
+  position: absolute;
+  bottom: -3rem;
+  color: var(--rose);
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  letter-spacing: 0.03em;
+  text-shadow: 0 0 12px rgba(217, 138, 161, 0.5);
+  white-space: nowrap;
+  animation: rise linear forwards;
+  will-change: transform, opacity;
+}
+
+.floating-word.is-glyph {
+  font-style: normal;
+  color: var(--rose-deep);
+}
+
+@keyframes rise {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate(var(--drift), -115vh) rotate(var(--rot));
+    opacity: 0;
+  }
+}
+
+/* ---------- gate / envelope ---------- */
+
+.gate {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  transition: opacity 0.6s ease;
+}
+
+.gate.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.gate-kicker {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+  font-size: 0.75rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+}
+
+.gate-name {
+  margin: 0.5rem 0 2.5rem;
+  font-family: "Great Vibes", cursive;
+  font-size: clamp(2.2rem, 6vw, 3.4rem);
+  color: var(--ivory);
+  text-shadow: 0 0 20px rgba(201, 168, 106, 0.35);
+}
+
+.envelope {
+  position: relative;
+  width: min(78vw, 260px);
+  height: calc(min(78vw, 260px) * 0.62);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.45));
+}
+
+.envelope-shadow {
+  position: absolute;
+  inset: 0;
+}
+
+.envelope-back {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, var(--wine-2), var(--wine));
+  border: 1px solid rgba(226, 198, 144, 0.35);
+  border-radius: 6px;
+}
+
+.envelope-front {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 62%;
+  background: linear-gradient(200deg, var(--wine) 0%, var(--wine-2) 100%);
+  border: 1px solid rgba(226, 198, 144, 0.35);
+  border-radius: 0 0 6px 6px;
+  clip-path: polygon(0 0, 50% 42%, 100% 0, 100% 100%, 0 100%);
+}
+
+.envelope-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 58%;
+  background: linear-gradient(200deg, var(--wine-2), var(--wine));
+  border: 1px solid rgba(226, 198, 144, 0.35);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top center;
+  transition: transform 0.9s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.6s ease 0.5s;
+  z-index: 3;
+}
+
+.seal {
+  position: absolute;
+  top: 46%;
+  left: 50%;
+  width: 46px;
+  height: 46px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--gold-soft), var(--gold) 55%, #8a6a34 100%);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+  animation: seal-breathe 3.5s ease-in-out infinite;
+}
+
+.seal-face {
+  font-family: "Great Vibes", cursive;
+  font-size: 1.1rem;
+  color: #4a2f10;
+}
+
+@keyframes seal-breathe {
+  0%, 100% { box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.4), 0 0 0 rgba(201, 168, 106, 0); }
+  50% { box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.4), 0 0 14px rgba(201, 168, 106, 0.55); }
+}
+
+.envelope.is-open .envelope-flap {
+  transform: rotateX(-165deg);
+  opacity: 0;
+}
+
+.envelope.is-open .seal {
+  transform: translate(-50%, -50%) scale(0.4) rotate(25deg);
+  opacity: 0;
+}
+
+.gate-hint {
+  margin-top: 1.75rem;
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(247, 223, 230, 0.55);
+}
+
+/* ---------- letter ---------- */
+
+.letter {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.25rem;
+  opacity: 0;
+}
+
+.letter.is-visible {
+  opacity: 1;
+  animation: letter-in 1.1s ease forwards;
+}
+
+@keyframes letter-in {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.letter-card {
+  max-width: 560px;
+  width: 100%;
+  background: linear-gradient(180deg, rgba(248, 241, 231, 0.06), rgba(248, 241, 231, 0.02));
+  border: 1px solid rgba(226, 198, 144, 0.25);
+  border-radius: 4px;
+  padding: clamp(1.75rem, 5vw, 3.25rem);
+  backdrop-filter: blur(2px);
+}
+
+.eyebrow {
+  margin: 0 0 0.5rem;
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+  font-size: 0.72rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+  text-align: center;
+}
+
+.letter-title {
+  margin: 0 0 2rem;
+  font-family: "Great Vibes", cursive;
+  font-weight: 400;
+  font-size: clamp(2rem, 5.5vw, 2.9rem);
+  text-align: center;
+  color: var(--ivory);
+}
+
+.letter-body p {
+  font-size: clamp(1.05rem, 2.4vw, 1.25rem);
+  line-height: 1.85;
+  margin: 0 0 1.4rem;
+  color: var(--blush);
+}
+
+.letter-body p:last-child {
+  margin-bottom: 0;
+}
+
+.signature {
+  margin: 2.25rem 0 0;
+  text-align: right;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--gold-soft);
+}
+
+/* ---------- sound toggle ---------- */
+
+.sound-toggle {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid rgba(226, 198, 144, 0.4);
+  background: rgba(15, 7, 16, 0.55);
+  color: var(--gold-soft);
+  font-size: 1.2rem;
+  cursor: pointer;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.sound-toggle:hover {
+  transform: scale(1.06);
+  background: rgba(15, 7, 16, 0.75);
+}
+
+.sound-toggle.is-muted {
+  color: rgba(247, 223, 230, 0.5);
+}
+
+@media (max-width: 480px) {
+  .gate-name {
+    margin-bottom: 2rem;
+  }
+}
